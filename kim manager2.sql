@@ -111,3 +111,40 @@ select mod(100, 3) from dual;
 select floor(123.4567) from dual;--123
 select trunc(345.678), trunc(345.678, 0) from dual;-- 345
 
+create table employees(
+EMPLOYEE_ID NUMBER(6,0) primary key,
+EMPLOYEE_NAME VARCHAR2(20) not null,
+EMPLOYEE_EMAIL VARCHAR2(25) not null,
+PHONE_NUMBER VARCHAR2(20) not null,
+HIRE_DATE DATE not null,
+JOB_ID VARCHAR2(10) not null,
+SALARY NUMBER(8,2) not null,
+COMMISSION NUMBER(6,2) not null,
+MANAGER_ID NUMBER(6,0) not null,
+DEPARTMENT_ID NUMBER(4,0) not null
+);
+insert into employees values(100,'StevenKing','StevenKing@StevenKing.com','010.123.4567','03/06/17','ITProg',24000,90,109, 10);
+insert into employees values(101,'NeenaKochhar','Neena@NeenaKochhar.com','010.123.4568','05/09/21','Account',17000,100,90,20);
+insert into employees values(102,'Lex','LDEHAAN@ldhan.com','010.123.4569','01/01/13','ITDataBase',17000,100,90,30);
+insert into employees values(103,'Alexander','Hunold@AHUNOLD.com','010.423.4567','06/01/03','IT_PROG',9000,102,60,40);
+insert into employees values(104,'Bruce','Ernst@BERNST.com','010.423.4568','07/05/21','IT_PROG',6000,103,60,50);
+insert into employees values(105,'David','Austin@DAUSTIN.com','010.423.4569','05/06/25','IT_PROG',4800,103,60,60);
+insert into employees values(106,'Valli','Pataballa@VPATABAL.com','010.423.4560','06/02/05','IT_PROG',4800,103,60,70);
+insert into employees values(107,'Diana','Lorentz@DLORENTZ.com','010.423.5567','07/02/07','IT_PROG',4200,103,60,80);
+insert into employees values(108,'Nancy','Greenberg@NGREENBE.com','010.124.4569','02/08/17','FI_MGR',12008,101,100,90);
+insert into employees values(109,'Daniel','Faviet@DFAVIET.com','010.124.4169','02/08/16','FI_ACCOUNT',9000,108,100,100);
+select * from employees;
+
+commit;
+
+select lower(stu_gender) from student;
+select lower(EMPLOYEE_NAME) from employees;
+select upper(EMPLOYEE_NAME) from employees;
+select initcap(EMPLOYEE_NAME) from employees;
+select concat(EMPLOYEE_NAME, job_id) from employees;
+select EMPLOYEE_NAME, substr(EMPLOYEE_NAME, 3,7) from employees;
+select EMPLOYEE_NAME, length(EMPLOYEE_NAME) from employees;
+select EMPLOYEE_NAME, instr(EMPLOYEE_NAME, 'ex') from employees;
+select lpad(EMPLOYEE_NAME, 15, '%') from employees;
+select rpad(EMPLOYEE_NAME, 15, '&') from employees;
+
