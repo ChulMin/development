@@ -330,5 +330,209 @@ select *
 from emp
 where job = 'MANAGER' or job = 'SALESMAN' 
 ORDER BY deptno desc;
+--103.부서번호가 20, 30번을 제외한 모든 사원의 모든 정보를 출력하라.
 select *
-from emp;
+from emp
+where deptno <>20 and deptno <>30;
+--104. 입사일이 81년도인 사원의 모든 정보를 출력하라.
+select *
+from emp
+where hiredate like '81%';
+--105. 커미션의 합이 2000 이상인 부서의 총급여와 총 커미션을 구하라.
+select sum(sal),sum(comm)
+from emp
+group by deptno 
+having sum(comm)>=2000;
+--106. 입사일별 평균 급여를 구하라.
+select avg(sal)
+from emp
+group by hiredate;
+--107. 직급이 ANALYST인 사원의 이름, 부서명을 구하라.
+select ename,deptno
+from emp
+where job ='ANALYST';
+--108. 이름에 "M"자가 들어간 사원들의 이름,부서명,급여를 구하라.
+select ename,deptno,sal
+from emp
+where ename like '%M%';
+--109. DALLAS에 위치한 부서에 속한 사원의 총사원수, 평균급여, 전체급여, 최고급여, 최저급여를 구하라 .
+select count(*),avg(sal),sum(sal),max(sal),min(sal)
+FROM EMP NATURAL JOIN deptf
+where loc ='DALLAS';
+--110. MANAGER인 사원들의 월급의 평균보다 월급이 적은 사람들의 이름과 월급을 출력하라.(subquery)
+select ename,sal
+from emp
+where sal < (select avg(sal) from emp where job = 'MANAGER');
+--111. SCOTT의 급여에서 1000 을 뺀 급여보다 적게 받는 사원의 이름,급여를 출력하라.(subquery)
+select ename,sal
+from emp
+where sal < (select sal-1000 from emp where ename = 'SCOTT');
+--112. EMP 테이블에서 이름이 5글자인 사원중 급여가 가장 높은 사원의 이름,급여,부서명을 출력하라.
+select e.ename,e.sal,d.dname
+from emp e,dept d
+where e.deptno = d.deptno 
+and sal= (select max(sal) from emp where length(ename)>=5) and length(ename)>=5;
+
+select ename,max(sal)
+    from emp
+    where length(ename) >= 5
+    group by ename;
+
+select e.ename, e.sal, d.dname
+    from emp e, dept d
+    where e.deptno = d.deptno
+    and sal = (select max(sal)
+                 from emp
+                 where length(ename) >= 5)
+        and length(ename) >= 5;
+        
+
+CREATE TABLE tCity (
+name CHAR(10) PRIMARY KEY,
+area INT NULL ,
+popu INT NULL ,
+metro CHAR(1) NOT NULL,
+region CHAR(6) NOT NULL
+);. 
+INSERT INTO tCity VALUES ('서울',605,974,'y','경기');
+INSERT INTO tCity VALUES ('부산',765,342,'y','경상');
+INSERT INTO tCity VALUES ('오산',42,21,'n','경기');
+INSERT INTO tCity VALUES ('청주',940,83,'n','충청');
+INSERT INTO tCity VALUES ('전주',205,65,'n','전라');
+INSERT INTO tCity VALUES ('순천',910,27,'n','전라');
+INSERT INTO tCity VALUES ('춘천',1116,27,'n','강원');
+INSERT INTO tCity VALUES ('홍천',1819,7,'n','강원');
+
+commit;
+
+ select student.*, enrol.*
+ from student cross join enrol;
+ 
+select student.stu_no, stu_name, stu_dept, enr_grade
+from student, enrol
+where student.stu_no = enrol.stu_no;
+
+--? NATURAL JOIN
+select stu_no, stu_name, stu_dept, enr_grade
+from student natural join enrol;
+--?두 테이블에 같은 열의 이름이 존재하면 사용.
+--?해결방법1] JOIN ~ USING
+select stu_no, stu_name, stu_dept, enr_grade
+from student join enrol using(stu_no) ;
+--?해결방법2] JOIN ~ ON
+select student.stu_no, stu_name, stu_dept, enr_grade
+from student join enrol on student.stu_no = enrol.stu_no ;
+
+create table CCC (
+stu_no number(9),
+stu_name varchar2(12),
+stu_gender char(1),
+stu_hakjum char(1),
+stu_kg number(3)); 
+drop table CCC;
+insert into CCC values(20153075, '옥한빛', 'M','A',78);
+insert into CCC values(20153088, '이태연', 'F','B',68);
+insert into CCC values(20143054, '유가인', 'F','C',58);
+insert into CCC values(20152088, '조민우', 'M','A',88);
+insert into CCC values(20142021, '심수정', 'F','B',68);
+insert into CCC values(20132003, '박희철', 'M','B',68);
+insert into CCC values(20151062, '김인중', 'M','C',58);
+insert into CCC values(20141007, '진현무', 'M','A',88);
+insert into CCC values(20131001, '김종헌', 'M','B',68);
+insert into CCC values(20131025, '옥성우', 'F','B',68);
+insert into CCC values(20131026, '옥성우2', 'F','A',64);
+
+commit;
+
+select stu_no, stu_name, stu_gender, stu_dept, stu_kg
+from student natural join CCC; 
+select stu_no, student.stu_name, student.stu_gender, stu_dept, stu_kg
+from student join CCC using(stu_no);
+select stu_no, stu_name, stu_gender, stu_dept, stu_kg
+from student join CCC using(stu_no, stu_name, stu_gender);
+select student.stu_no, student.stu_name, student.stu_gender, stu_dept, CCC.stu_kg
+from student join CCC on student.stu_no = CCC.stu_no;--결과 출력됨
+
+select student.stu_no, stu_name
+from student, enrol
+where student.stu_no = enrol.stu_no
+and sub_no = 101;
+
+select distinct s.stu_no, s.stu_name, e.sub_no, s2.sub_name
+from student s, enrol e, subject s2
+where s.stu_no = e.stu_no
+and e.sub_no = s2.sub_no
+and (e.sub_no = 101
+or e.sub_no = 104)
+order by 1;
+
+select student.stu_no, stu_name
+from student, enrol
+where student.stu_no = enrol.stu_no
+and sub_no = 101 or sub_no = 102;
+
+select student.stu_no, stu_name
+from student, enrol
+where student.stu_no = enrol.stu_no
+and (sub_no = 101 or sub_no = 102);
+
+select stu_no, stu_name, sub_no
+from student natural join enrol
+where sub_no = 101 or sub_no = 102; 
+select stu_no, stu_name, sub_no
+from student join enrol using(stu_no)
+where sub_no = 101 or sub_no = 102;
+select student.stu_no, stu_name, sub_no
+from student join enrol on student.stu_no = enrol.stu_no
+where sub_no = 101 or sub_no = 102;
+
+select student.stu_no, stu_name, sub_name, subject.sub_no
+from student, enrol, subject
+where student.stu_no = enrol.stu_no
+and enrol.sub_no = subject.sub_no
+and (enrol.sub_no = 101 or enrol.sub_no = 102);
+
+select empno, ename, sal, grade
+from emp, salgrade
+where sal between losal and hisal;
+
+select a.empno as 사원번호, a.ename as 사원이름, 
+b.empno as 상급자사원번호, b.ename as 상급자이름
+from emp a, emp b
+where a.mgr = b.empno;
+
+select a.empno as 사원번호, a.ename as 사원이름, 
+b.empno as 상급자사원번호, b.ename as 상급자이름
+from emp a JOIN emp b
+ON a.mgr = b.empno;
+
+--Outer join
+select e.*, sub_name
+from enrol e, subject s
+where e.sub_no = s.sub_no
+order by s.sub_no;
+
+select e.sub_no, e.stu_no, e.enr_grade, sub_name
+from enrol e, subject s
+where e.sub_no = s.sub_no
+order by 1; -- sub_no [o]
+select e.*, sub_name
+from enrol e, subject s
+where e.sub_no = s.sub_no
+order by 1; -- [O], s.sub_no [O]
+
+--right outer join조인
+select a.*, sub_name
+from enrol a right outer join subject b
+on a.sub_no = b.sub_no
+order by 1;
+
+--left outer join조인
+select a.empno as 사원번호, a.ename as 사원이름, 
+b.empno as 상급자사원번호, b.ename as 상급자이름
+ from emp a left outer join emp b on a.mgr = b.empno;
+
+--full outer join조인
+ select a.empno as 사원번호, a.ename as 사원이름, 
+b.empno as 상급자사원번호, b.ename as 상급자이름
+ from emp a full outer join emp b on a.mgr = b.empno;
