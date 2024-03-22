@@ -318,5 +318,17 @@ select deptno,(sal/4)/7
 from emp
 where deptno =20;
 --100. 입사일이 81/04/02보다 늦고 82/12/09보다 빠른 모든 정보를 출력하라.
+select *
+from emp
+where hiredate >='81/04/02' and hiredate <='82/12/09';
 --101.급여가 1,600보다 크고 3,000보다 작은 사원의 이름, 직업(업무), 급여를 출력하라.
+select ename,job,sal
+from emp
+where sal > 1600 and sal < 3000 ;
 --102. 직업이 MANAGER와 SALESMAN인 사원의 모든 정보를 출력하라. --단, 부서번호로 ASCENDING SORT 한 후 급여가 많은 사원 순으로 출력하라.
+select *
+from emp
+where job = 'MANAGER' or job = 'SALESMAN' 
+ORDER BY deptno desc;
+select *
+from emp;
